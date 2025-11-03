@@ -4,7 +4,7 @@ A full-stack media management and ordering platform built with modern web techno
 
 ## Projects
 
-### [cem-api](https://github.com/cem-org/cem-api)
+### [cem-api](https://github.com/christian-evangelism-media/cem-api)
 
 Backend API built with AdonisJS 6 and PostgreSQL.
 
@@ -20,7 +20,7 @@ Backend API built with AdonisJS 6 and PostgreSQL.
 - TypeScript
 - Lucid ORM
 
-### [cem-web](https://github.com/cem-org/cem-web)
+### [cem-web](https://github.com/christian-evangelism-media/cem-web)
 
 Frontend web application built with React and Vite.
 
@@ -33,11 +33,12 @@ Frontend web application built with React and Vite.
 - Responsive design
 
 **Tech Stack:**
-- React 18
+- React 19
 - TypeScript
 - Vite
 - TanStack Query (React Query)
-- Tailwind CSS
+- Tailwind CSS 4
+- DaisyUI
 - i18next
 
 ## Getting Started
@@ -52,8 +53,8 @@ Frontend web application built with React and Vite.
 
 1. **Clone the repositories**
    ```bash
-   git clone https://github.com/cem-org/cem-api.git
-   git clone https://github.com/cem-org/cem-web.git
+   git clone https://github.com/christian-evangelism-media/cem-api.git
+   git clone https://github.com/christian-evangelism-media/cem-web.git
    ```
 
 2. **Set up the API**
