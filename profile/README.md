@@ -1,6 +1,6 @@
 # Christian Evangelism Media (CEM)
 
-A full-stack platform for distributing Christian evangelism media materials in 26 languages, with role-based administration and content management.
+A full-stack platform for distributing Christian evangelism media materials in 30 languages, with role-based administration and content management.
 
 ## Projects
 
@@ -10,7 +10,7 @@ Backend API built with AdonisJS 6 and PostgreSQL.
 
 **Features:**
 - Role-based authentication and authorization (super_admin, admin, support, user)
-- Multi-language media management with i18n support (26 languages)
+- Multi-language media management with i18n support (30 languages)
 - Order creation and tracking
 - Cart management
 - Email verification system
@@ -35,7 +35,7 @@ Public-facing web application built with React and Vite.
 - Shopping cart and order placement
 - Address management
 - Language preference system (affects media ordering)
-- Multi-language UI support (26 languages via i18next)
+- Multi-language UI support (30 languages via i18next)
 - PDF viewing (digital and press-ready versions)
 - Responsive design with dark mode
 - Dynamic pagination based on screen height
@@ -153,12 +153,12 @@ The platform follows a client-server architecture with separate public and admin
 
 ## Supported Languages
 
-The platform supports 26 languages in ISO 639 format:
+The platform supports 30 languages in ISO 639 format:
 - Arabic (ar), Bengali (bn), German (de), Greek (el), English (en), Spanish (es)
 - Persian (fa), Fulah (ff), French (fr), Hebrew (he), Hindi (hi), Haitian Creole (ht)
-- Indonesian (id), Ilocano (ilo), Italian (it), Japanese (ja), Korean (ko), Punjabi (pa)
-- Portuguese (pt), Romanian (ro), Russian (ru), Tamil (ta), Tagalog (tl), Urdu (ur)
-- Vietnamese (vi), Chinese (zh)
+- Indonesian (id), Ilocano (ilo), Italian (it), Japanese (ja), Korean (ko), Marathi (mr)
+- Punjabi (pa), Portuguese (pt), Romanian (ro), Russian (ru), Swahili (sw), Tamil (ta)
+- Telugu (te), Tagalog (tl), Turkish (tr), Urdu (ur), Vietnamese (vi), Chinese (zh)
 
 ## Contributing
 
