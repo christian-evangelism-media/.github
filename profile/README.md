@@ -1,6 +1,6 @@
-# CEM Organization
+# Christian Evangelism Media (CEM)
 
-A full-stack media management and ordering platform built with modern web technologies.
+A full-stack platform for distributing Christian evangelism media materials in 26 languages, with role-based administration and content management.
 
 ## Projects
 
@@ -9,37 +9,84 @@ A full-stack media management and ordering platform built with modern web techno
 Backend API built with AdonisJS 6 and PostgreSQL.
 
 **Features:**
-- User authentication and session management
-- Media management (photos, videos, audio files)
+- Role-based authentication and authorization (super_admin, admin, support, user)
+- Multi-language media management with i18n support (26 languages)
 - Order creation and tracking
-- RESTful API with JSON responses
+- Cart management
+- Email verification system
+- Media visibility control (draft/published)
+- Admin endpoints for user and content management
+- RESTful API with session-based authentication
 
 **Tech Stack:**
 - AdonisJS 6
 - PostgreSQL
 - TypeScript
 - Lucid ORM
+- Vinejs validation
 
 ### [cem-web](https://github.com/christian-evangelism-media/cem-web)
 
-Frontend web application built with React and Vite.
+Public-facing web application built with React and Vite.
 
 **Features:**
 - User authentication (register, login, logout)
-- Media browsing and filtering by type
+- Browse and filter Christian evangelism media by language and type
 - Shopping cart and order placement
-- Multi-language support (English, Spanish, French)
-- Dark/light theme toggle
-- Responsive design
+- Address management
+- Language preference system (affects media ordering)
+- Multi-language UI support (26 languages via i18next)
+- PDF viewing (digital and press-ready versions)
+- Responsive design with dark mode
+- Dynamic pagination based on screen height
 
 **Tech Stack:**
 - React 19
 - TypeScript
 - Vite
 - TanStack Query (React Query)
-- Tailwind CSS 4
+- TailwindCSS v4
 - DaisyUI
 - i18next
+- React Router
+
+### [cem-admin](https://github.com/christian-evangelism-media/cem-admin)
+
+Admin panel for managing the service.
+
+**Features:**
+- Dashboard with statistics
+- User management (create, edit, role assignment)
+- Media management (create, edit, delete, publish/unpublish)
+- Order management (view, update status)
+- Role-based UI (features shown/hidden based on permissions)
+- Media draft system (support creates drafts, admins publish)
+- Inline role changes with permission checks
+- Responsive design matching cem-web
+
+**Tech Stack:**
+- React 19
+- TypeScript
+- Vite
+- TanStack Query
+- TailwindCSS v4
+- DaisyUI
+- Luxon
+- React Router
+
+## Role-Based Permission System
+
+### Roles
+1. **super_admin** - Full system access, created via database
+2. **admin** - Full service administration, created by super_admin
+3. **support** - Order management & media creation, created by admin/super_admin
+4. **user** - Public website access only (default)
+
+### Key Permissions
+- **Media Visibility**: Support creates drafts, admin/super_admin publish
+- **User Management**: Admin can manage user/support roles, super_admin can create admins
+- **Content Control**: Support can only edit their own unpublished media
+- **Orders**: All staff can view and update order status
 
 ## Getting Started
 
@@ -55,6 +102,7 @@ Frontend web application built with React and Vite.
    ```bash
    git clone https://github.com/christian-evangelism-media/cem-api.git
    git clone https://github.com/christian-evangelism-media/cem-web.git
+   git clone https://github.com/christian-evangelism-media/cem-admin.git
    ```
 
 2. **Set up the API**
@@ -62,7 +110,7 @@ Frontend web application built with React and Vite.
    cd cem-api
    npm install
    cp .env.example .env
-   # Generate APP_KEY and configure database credentials
+   # Configure database credentials and generate APP_KEY
    node ace migration:run
    npm run dev
    ```
@@ -72,17 +120,45 @@ Frontend web application built with React and Vite.
    cd cem-web
    npm install
    cp .env.example .env
-   # Configure VITE_API_URL if needed
+   # Set VITE_API_URL=http://localhost:3333
    npm run dev
+   ```
+
+4. **Set up the Admin Panel**
+   ```bash
+   cd cem-admin
+   npm install
+   cp .env.example .env
+   # Set VITE_API_URL=http://localhost:3333
+   npm run dev
+   ```
+
+5. **Create the first super_admin**
+   ```sql
+   -- Connect to PostgreSQL
+   PGPASSWORD=postgres psql -U postgres -d cem
+
+   -- Promote a user to super_admin
+   UPDATE users SET role = 'super_admin' WHERE email = 'your-email@example.com';
    ```
 
 ## Architecture
 
-The platform follows a client-server architecture:
+The platform follows a client-server architecture with separate public and admin frontends:
 
-- **Frontend**: Single-page application communicating with the backend via REST API
-- **Backend**: RESTful API with session-based authentication using cookies
-- **Database**: PostgreSQL with Lucid ORM for data persistence
+- **Public Frontend (cem-web)**: User-facing SPA for browsing and ordering media
+- **Admin Frontend (cem-admin)**: Administrative panel for managing content, orders, and users
+- **Backend (cem-api)**: RESTful API with role-based access control and session-based authentication
+- **Database**: PostgreSQL with JSONB fields for multi-language content
+
+## Supported Languages
+
+The platform supports 26 languages in ISO 639 format:
+- Arabic (ar), Bengali (bn), German (de), Greek (el), English (en), Spanish (es)
+- Persian (fa), Fulah (ff), French (fr), Hebrew (he), Hindi (hi), Haitian Creole (ht)
+- Indonesian (id), Ilocano (ilo), Italian (it), Japanese (ja), Korean (ko), Punjabi (pa)
+- Portuguese (pt), Romanian (ro), Russian (ru), Tamil (ta), Tagalog (tl), Urdu (ur)
+- Vietnamese (vi), Chinese (zh)
 
 ## Contributing
 
@@ -90,4 +166,4 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 ## License
 
-See individual repositories for license information.
+All repositories are dual-licensed under MIT License and The Unlicense.
