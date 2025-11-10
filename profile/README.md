@@ -155,7 +155,7 @@ The platform follows a client-server architecture with separate public and admin
 
 The platform supports 30 languages in ISO 639 format:
 - Arabic (ar), Bengali (bn), German (de), Greek (el), English (en), Spanish (es)
-- Persian (fa), Fulah (ff), French (fr), Hebrew (he), Hindi (hi), Haitian Creole (ht)
+- Persian (fa), French (fr), Hausa (ha), Hebrew (he), Hindi (hi), Haitian Creole (ht)
 - Indonesian (id), Ilocano (ilo), Italian (it), Japanese (ja), Korean (ko), Marathi (mr)
 - Punjabi (pa), Portuguese (pt), Romanian (ro), Russian (ru), Swahili (sw), Tamil (ta)
 - Telugu (te), Tagalog (tl), Turkish (tr), Urdu (ur), Vietnamese (vi), Chinese (zh)
