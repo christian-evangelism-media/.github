@@ -50,17 +50,18 @@ Public-facing web application built with React and Vite.
 - i18next
 - React Router
 
-### [cem-admin](https://github.com/christian-evangelism-media/cem-admin)
+### [cem-ops](https://github.com/christian-evangelism-media/cem-ops)
 
-Admin panel for managing the service.
+Operations panel for managing the service.
 
 **Features:**
 - Dashboard with statistics
 - User management (create, edit, role assignment)
 - Media management (create, edit, delete, publish/unpublish)
 - Order management (view, update status)
+- Customer messaging system
 - Role-based UI (features shown/hidden based on permissions)
-- Media draft system (support creates drafts, admins publish)
+- Media draft system (help creates drafts, admins publish)
 - Inline role changes with permission checks
 - Responsive design matching cem-web
 
@@ -79,13 +80,15 @@ Admin panel for managing the service.
 ### Roles
 1. **super_admin** - Full system access, created via database
 2. **admin** - Full service administration, created by super_admin
-3. **support** - Order management & media creation, created by admin/super_admin
-4. **user** - Public website access only (default)
+3. **support** - Customer service & account management, created by admin/super_admin
+4. **help** - Warehouse/fulfillment & media draft creation, created by admin/super_admin
+5. **user** - Public website access only (default)
 
 ### Key Permissions
-- **Media Visibility**: Support creates drafts, admin/super_admin publish
-- **User Management**: Admin can manage user/support roles, super_admin can create admins
-- **Content Control**: Support can only edit their own unpublished media
+- **Media Visibility**: Help creates drafts, admin/super_admin publish
+- **User Management**: Admin can manage user/support/help roles, super_admin can create admins
+- **Content Control**: Help can only edit their own unpublished media
+- **Messages**: Support handles customer service, help does not
 - **Orders**: All staff can view and update order status
 
 ## Getting Started
@@ -102,7 +105,7 @@ Admin panel for managing the service.
    ```bash
    git clone https://github.com/christian-evangelism-media/cem-api.git
    git clone https://github.com/christian-evangelism-media/cem-web.git
-   git clone https://github.com/christian-evangelism-media/cem-admin.git
+   git clone https://github.com/christian-evangelism-media/cem-ops.git
    ```
 
 2. **Set up the API**
@@ -124,9 +127,9 @@ Admin panel for managing the service.
    npm run dev
    ```
 
-4. **Set up the Admin Panel**
+4. **Set up the Operations Panel**
    ```bash
-   cd cem-admin
+   cd cem-ops
    npm install
    cp .env.example .env
    # Set VITE_API_URL=http://localhost:3333
@@ -144,10 +147,10 @@ Admin panel for managing the service.
 
 ## Architecture
 
-The platform follows a client-server architecture with separate public and admin frontends:
+The platform follows a client-server architecture with separate public and operations frontends:
 
 - **Public Frontend (cem-web)**: User-facing SPA for browsing and ordering media
-- **Admin Frontend (cem-admin)**: Administrative panel for managing content, orders, and users
+- **Operations Frontend (cem-ops)**: Operations panel for managing content, orders, users, and customer service
 - **Backend (cem-api)**: RESTful API with role-based access control and session-based authentication
 - **Database**: PostgreSQL with JSONB fields for multi-language content
 
