@@ -2,78 +2,50 @@
 
 A full-stack platform for distributing Christian evangelism media materials in 30 languages, with role-based administration and content management.
 
-## Projects
+## Repository
 
-### [cem-api](https://github.com/christian-evangelism-media/cem-api)
+### [cem](https://github.com/christian-evangelism-media/cem)
 
-Backend API built with AdonisJS 6 and PostgreSQL.
+A monorepo containing all CEM applications with end-to-end type safety via Tuyau.
 
-**Features:**
-- Role-based authentication and authorization (super_admin, admin, support, user)
+**Structure:**
+```
+cem/
+├── packages/
+│   ├── api/          Backend API (AdonisJS 6)
+│   ├── web/          Public website (React 19)
+│   ├── ops/          Staff operations panel (React 19)
+│   └── scanner/      Mobile app for warehouse (Ionic/React)
+├── package.json      Workspace configuration
+└── .adonisjs/        Generated API types (Tuyau)
+```
+
+**Key Features:**
+- End-to-end type safety between backend and all frontends via Tuyau
+- Role-based authentication and authorization (super_admin, admin, support, help, user)
 - Multi-language media management with i18n support (30 languages)
 - Order creation and tracking
 - Cart management
 - Email verification system
 - Media visibility control (draft/published)
-- Admin endpoints for user and content management
-- RESTful API with session-based authentication
-
-**Tech Stack:**
-- AdonisJS 6
-- PostgreSQL
-- TypeScript
-- Lucid ORM
-- Vinejs validation
-
-### [cem-web](https://github.com/christian-evangelism-media/cem-web)
-
-Public-facing web application built with React and Vite.
-
-**Features:**
-- User authentication (register, login, logout)
-- Browse and filter Christian evangelism media by language and type
+- Customer messaging system
 - Shopping cart and order placement
 - Address management
-- Language preference system (affects media ordering)
-- Multi-language UI support (30 languages via i18next)
+- Language preference system
 - PDF viewing (digital and press-ready versions)
-- Responsive design with dark mode
-- Dynamic pagination based on screen height
+- Barcode scanning for warehouse operations
+- Health monitoring and emergency lockdown
+- Maintenance mode control
 
 **Tech Stack:**
-- React 19
-- TypeScript
-- Vite
-- TanStack Query (React Query)
-- TailwindCSS v4
-- DaisyUI
-- i18next
-- React Router
-
-### [cem-ops](https://github.com/christian-evangelism-media/cem-ops)
-
-Operations panel for managing the service.
-
-**Features:**
-- Dashboard with statistics
-- User management (create, edit, role assignment)
-- Media management (create, edit, delete, publish/unpublish)
-- Order management (view, update status)
-- Customer messaging system
-- Role-based UI (features shown/hidden based on permissions)
-- Media draft system (help creates drafts, admins publish)
-- Inline role changes with permission checks
-- Responsive design matching cem-web
-
-**Tech Stack:**
-- React 19
-- TypeScript
-- Vite
-- TanStack Query
-- TailwindCSS v4
-- DaisyUI
-- Luxon
-- React Router
+- **Backend:** AdonisJS 6, PostgreSQL, Lucid ORM
+- **Frontends:** React 19, TypeScript, Vite
+- **UI:** TailwindCSS v4, DaisyUI
+- **State:** TanStack Query
+- **i18n:** i18next (frontend), @adonisjs/i18n (backend)
+- **Mobile:** Ionic, Capacitor
+- **Type Safety:** Tuyau
+- **Email:** Resend
 
 ## Role-Based Permission System
 
@@ -101,42 +73,56 @@ Operations panel for managing the service.
 
 ### Setup
 
-1. **Clone the repositories**
+1. **Clone the repository**
    ```bash
-   git clone https://github.com/christian-evangelism-media/cem-api.git
-   git clone https://github.com/christian-evangelism-media/cem-web.git
-   git clone https://github.com/christian-evangelism-media/cem-ops.git
+   git clone https://github.com/christian-evangelism-media/cem.git
+   cd cem
    ```
 
-2. **Set up the API**
+2. **Install dependencies**
    ```bash
-   cd cem-api
    npm install
+   ```
+
+3. **Set up the API**
+   ```bash
+   cd packages/api
    cp .env.example .env
    # Configure database credentials and generate APP_KEY
    node ace migration:run
-   npm run dev
+   cd ../..
    ```
 
-3. **Set up the Web App**
+4. **Set up environment files for frontends**
    ```bash
-   cd cem-web
-   npm install
-   cp .env.example .env
+   # Web
+   cp packages/web/.env.example packages/web/.env
    # Set VITE_API_URL=http://localhost:3333
-   npm run dev
+
+   # Ops
+   cp packages/ops/.env.example packages/ops/.env
+   # Set VITE_API_URL=http://localhost:3333
+
+   # Scanner
+   cp packages/scanner/.env.example packages/scanner/.env
+   # Set VITE_API_URL=http://localhost:3333
    ```
 
-4. **Set up the Operations Panel**
+5. **Generate API types (critical for type safety)**
    ```bash
-   cd cem-ops
-   npm install
-   cp .env.example .env
-   # Set VITE_API_URL=http://localhost:3333
-   npm run dev
+   npm run generate:types
    ```
 
-5. **Create the first super_admin**
+6. **Run development servers**
+   ```bash
+   # Run all from monorepo root:
+   npm run dev:api      # API on port 3333
+   npm run dev:web      # Web on port 5173
+   npm run dev:ops      # Ops on port 5174
+   npm run dev:scanner  # Scanner on port 5175
+   ```
+
+7. **Create the first super_admin**
    ```sql
    -- Connect to PostgreSQL
    PGPASSWORD=postgres psql -U postgres -d cem
@@ -145,14 +131,26 @@ Operations panel for managing the service.
    UPDATE users SET role = 'super_admin' WHERE email = 'your-email@example.com';
    ```
 
+### Important: Type Generation Workflow
+
+When you modify API routes, controllers, or request/response structures, you MUST regenerate types:
+
+```bash
+npm run generate:types
+```
+
+This ensures all frontends have up-to-date TypeScript types from the backend.
+
 ## Architecture
 
-The platform follows a client-server architecture with separate public and operations frontends:
+The platform follows a monorepo architecture with multiple applications:
 
-- **Public Frontend (cem-web)**: User-facing SPA for browsing and ordering media
-- **Operations Frontend (cem-ops)**: Operations panel for managing content, orders, users, and customer service
-- **Backend (cem-api)**: RESTful API with role-based access control and session-based authentication
+- **Backend (packages/api)**: RESTful API with role-based access control and session-based authentication
+- **Public Frontend (packages/web)**: User-facing SPA for browsing and ordering media
+- **Operations Frontend (packages/ops)**: Operations panel for managing content, orders, users, and customer service
+- **Mobile App (packages/scanner)**: Ionic/React app for warehouse barcode scanning and order fulfillment
 - **Database**: PostgreSQL with JSONB fields for multi-language content
+- **Type Safety**: Tuyau generates TypeScript types from API routes, shared across all frontends
 
 ## Supported Languages
 
